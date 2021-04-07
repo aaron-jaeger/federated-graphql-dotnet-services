@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+    graphql-gatway:
+        image: graphql/gateway
+        links:
+            - book-management-api
+            - author-management-api
+        ports:
+            - 40000:80
+        environment:
+            - GRAPHQL_URL_0=http://book-management-api/graphql
+            - GRAPHQL_URL_1=http://author-management-api/graphql
+            - GRAPHQL_UPDATE_GATEWAY=true
+            - GRAPHQL_UPDATE_GATEWAY_INTERVAL_MS=60000
+    book-management-api:
+        image: bookmanagement.api
+        build:
+            context: .
+            dockerfile: ./src/BookManagement/BookManagement.Api/Dockerfile
+        ports:
+            - 41000:80
+            - 41001:443
+    author-management-api:
+        image: authormanagement.api
+        build:
+            context: .
+            dockerfile: ./src/AuthorManagement/AuthorManagement.Api/Dockerfile
+        ports:
+            - 42000:80
+            - 42001:443
