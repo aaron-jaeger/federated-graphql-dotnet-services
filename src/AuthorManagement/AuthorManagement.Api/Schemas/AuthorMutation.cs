@@ -19,10 +19,7 @@ namespace AuthorManagement.Api.Schemas
         [GraphQLMetadata("createAuthor")]
         public Task<Author> AddAuthorAsync(AuthorInput input)
         {
-            var author = new Author(input.FirstName, input.LastName, new List<Book>() 
-            {
-                new Book { Id = Guid.NewGuid() }
-            });
+            var author = new Author();
             return _service.AddAuthorAsync(author);
         }
     }

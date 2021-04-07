@@ -61,7 +61,11 @@ namespace AuthorManagement.Api
                         type Author @key(fields: ""id"") {
                             id: ID!
                             firstName: String
+                            middleName: String
                             lastName: String
+                            fullName: String
+                            isPenName: Boolean
+                            aliases: [Author]
                             books: [Book]
                         }
 

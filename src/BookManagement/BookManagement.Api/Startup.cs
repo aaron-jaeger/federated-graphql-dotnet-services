@@ -39,9 +39,13 @@ namespace BookManagement.Api
                     return FederatedSchema.For(@"
                         type Book @key(fields: ""id"") {
                             id: ID!
-                            title: String!
-                            description: String!
+                            title: String
+                            overview: String
                             author: Author
+                            isbn: Long
+                            publisher: String
+                            publicationDate: Date
+                            pages: Int
                         }
 
                         extend type Query {
