@@ -1,9 +1,6 @@
-using AuthorManagement.Api.Models;
 using AuthorManagement.Api.Schemas;
 using AuthorManagement.Api.Services;
-using GraphQL;
 using GraphQL.Server;
-using GraphQL.SystemTextJson;
 using GraphQL.Types;
 using GraphQL.Utilities.Federation;
 using Microsoft.AspNetCore.Builder;

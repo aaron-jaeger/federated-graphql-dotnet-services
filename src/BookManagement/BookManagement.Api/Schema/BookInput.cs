@@ -3,13 +3,12 @@ using System;
 
 namespace BookManagement.Api.Schema
 {
-    [GraphQLMetadata("Book")]
-    public class BookType
+    [GraphQLMetadata("BookInput")]
+    public class BookInput
     {
-        public Guid Id { get; set; }
         public string Title { get; set; }
         public string Overview { get; set; }
-        public AuthorType Author { get; set; }
+        public Guid AuthorId { get; set; }
         public long Isbn { get; set; }
         public string Publisher { get; set; }
         public DateTime PublicationDate { get; set; }

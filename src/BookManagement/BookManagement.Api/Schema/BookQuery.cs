@@ -1,5 +1,4 @@
-﻿using BookManagement.Api.Models;
-using BookManagement.Api.Services;
+﻿using BookManagement.Domain.BookAggregate;
 using GraphQL;
 using System;
 using System.Collections.Generic;
@@ -10,9 +9,9 @@ namespace BookManagement.Api.Schema
     [GraphQLMetadata("Query")]
     public class BookQuery
     {
-        private readonly IBookService _books;
+        private readonly IBookRepository _books;
 
-        public BookQuery(IBookService books)
+        public BookQuery(IBookRepository books)
         {
             _books = books;
         }
@@ -20,13 +19,13 @@ namespace BookManagement.Api.Schema
         [GraphQLMetadata("books")]
         public async Task<IEnumerable<Book>> GetBooksAsync()
         {
-            return await _books.GetBooksAsync();
+            return await _books.RetrieveAllAsync();
         }
 
         [GraphQLMetadata("book")]
         public async Task<Book> GetBookByIdAsync(Guid id)
         {
-            return await _books.GetBookByIdAsync(id);
+            return await _books.RetrieveByIdAsync(id);
         }
     }
 }

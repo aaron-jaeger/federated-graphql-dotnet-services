@@ -1,8 +1,6 @@
 ﻿using AuthorManagement.Api.Models;
 using AuthorManagement.Api.Services;
 using GraphQL;
-using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace AuthorManagement.Api.Schemas
