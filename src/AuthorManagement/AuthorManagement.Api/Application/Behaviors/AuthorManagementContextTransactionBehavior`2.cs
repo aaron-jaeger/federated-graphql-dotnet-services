@@ -1,10 +1,10 @@
-﻿using BookManagement.Infrastructure;
+﻿using AuthorManagement.Infrastructure;
 using Core.Application.Behaviors;
 using Microsoft.Extensions.Logging;
 
-namespace BookManagement.Api.Application.Behaviors
+namespace AuthorManagement.Api.Application.Behaviors
 {
-    public class BookManagementContextTransactionBehavior<TRequest, TResponse>
+    public class AuthorManagementContextTransactionBehavior<TRequest, TResponse> 
         : TransactionBehavior<TRequest, TResponse>
     {
         /// <summary>
@@ -12,8 +12,8 @@ namespace BookManagement.Api.Application.Behaviors
         /// </summary>
         /// <param name="logger"></param>
         /// <param name="dbContext"></param>
-        public BookManagementContextTransactionBehavior(ILogger<BookManagementContextTransactionBehavior<TRequest, TResponse>> logger,
-            BookManagementContext dbContext)
+        public AuthorManagementContextTransactionBehavior(ILogger<AuthorManagementContextTransactionBehavior<TRequest, TResponse>> logger,
+            AuthorManagementContext dbContext)
             : base(logger, dbContext)
         {
         }

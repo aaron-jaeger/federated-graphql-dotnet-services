@@ -1,0 +1,28 @@
+input AuthorInput {
+    firstName: String
+    middleName: String
+    lastName: String
+    bookIds: [String]
+}
+
+extend type Query {
+    authors: [Author!]
+    author(id: ID!): Author
+}
+
+extend type Mutation {
+    createAuthor(authorInput: AuthorInput): Author
+}
+
+type Author @key(fields: "id") {
+    id: ID!
+    firstName: String
+    middleName: String
+    lastName: String
+    fullName: String
+    books: [Book]
+}
+
+extend type Book @key(fields: "id") {
+    id: ID! @external
+}

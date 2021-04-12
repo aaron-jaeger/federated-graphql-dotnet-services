@@ -1,22 +1,21 @@
-﻿using BookManagement.Domain.BookAggregate;
-using BookManagement.Infrastructure.EntityTypeConfigurations;
+﻿using AuthorManagement.Domain.AuthorAggregate;
+using AuthorManagement.Infrastructure.EntityTypeConfigurations;
 using Core.Domain;
 using Core.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
-namespace BookManagement.Infrastructure
+namespace AuthorManagement.Infrastructure
 {
-    public class BookManagementContext 
+    public class AuthorManagementContext
         : CoreDbContext, IUnitOfWork
     {
-        public DbSet<Book> Book { get; set; }
         public DbSet<Author> Author { get; set; }
 
         /// <summary>
-        /// Constructor for the BookManagementContext.
+        /// Constructor for the AuthorManagementContext.
         /// </summary>
         /// <param name="options"></param>
-        public BookManagementContext(DbContextOptions<BookManagementContext> options) 
+        public AuthorManagementContext(DbContextOptions<AuthorManagementContext> options)
             : base(options)
         {
         }
@@ -24,7 +23,6 @@ namespace BookManagement.Infrastructure
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder
-                .ApplyConfiguration(new BookEntityTypeConfiguration())
                 .ApplyConfiguration(new AuthorEntityTypeConfiguration());
         }
     }

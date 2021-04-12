@@ -1,5 +1,6 @@
-﻿using BookManagement.Api.Extensions;
-using BookManagement.Domain.BookAggregate;
+﻿using AuthorManagement.Api.Extensions;
+using AuthorManagement.Api.Schemas;
+using AuthorManagement.Domain.AuthorAggregate;
 using GraphQL.Types;
 using GraphQL.Utilities.Federation;
 using Microsoft.Extensions.DependencyInjection;
@@ -7,7 +8,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.IO;
 
-namespace BookManagement.Api.Schema
+namespace AuthorManagement.Api.Schema
 {
     public static class FederatedSchemaFactory
     {
@@ -25,27 +26,27 @@ namespace BookManagement.Api.Schema
                 _.Types
                     .Include<AuthorType>();
                 _.Types
-                    .Include<BookInput>();
+                    .Include<AuthorInput>();
                 _.Types
-                    .Include<BookQuery>();
+                    .Include<AuthorQuery>();
                 _.Types
-                    .Include<BookMutation>();
+                    .Include<AuthorMutation>();
                 _.Types
-                    .For(nameof(Book))
+                    .For(nameof(Author))
                     .ResolveReferenceAsync(async context =>
                     {
                         using var scope = serviceProvider.CreateScope();
-                        var logger = scope.ServiceProvider.GetRequiredService<ILogger>();
-                        var bookRepository = scope.ServiceProvider.GetRequiredService<IBookRepository>();
+                        //var logger = scope.ServiceProvider.GetRequiredService<ILogger>();
+                        var authorRepository = scope.ServiceProvider.GetRequiredService<IAuthorRepository>();
 
-                        logger.LogDebug("Parsing id for aggregate root");
+                        //logger.LogDebug("Parsing id for aggregate root");
 
                         var id = Guid.Parse((string)context.Arguments["id"]);
 
-                        logger.LogDebug("Resolving reference for {AggregateRootName} by id {Id}", nameof(Book), id);
-                        var book = await bookRepository.RetrieveBookByBookIdAsync(id);
+                        //logger.LogDebug("Resolving reference for {AggregateRootName} by id {Id}", nameof(Author), id);
+                        var author = await authorRepository.RetrieveAuthorByAuthorIdAsync(id);
 
-                        var result = book.AsBookType();
+                        var result = author.AsAuthorType();
 
                         return result;
                     });
