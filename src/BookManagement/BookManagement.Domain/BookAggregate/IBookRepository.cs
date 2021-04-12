@@ -9,7 +9,8 @@ namespace BookManagement.Domain.BookAggregate
         : IRepository<Book>
     {
         Book Create(Book book);
-        Task<Book> RetrieveByIdAsync(Guid id);
-        Task<IEnumerable<Book>> RetrieveAllAsync();
+        Task<Book> RetrieveBookByBookIdAsync(Guid id);
+        Task<IEnumerable<Book>> RetrieveAllBooksAsync();
+        Task<Author> RetrieveAuthorByAuthorIdAsync(Guid id);
     }
 }

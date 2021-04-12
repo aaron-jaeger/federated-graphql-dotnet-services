@@ -21,21 +21,29 @@ namespace BookManagement.Infrastructure.Repositories
 
         public Book Create(Book book)
         {
-            return _context.Books
+            return _context.Book
                 .Add(book)
                 .Entity;
         }
 
-        public async Task<IEnumerable<Book>> RetrieveAllAsync()
+        public async Task<IEnumerable<Book>> RetrieveAllBooksAsync()
         {
-            return await _context.Books
+            return await _context.Book
+                .Include(book => book.Author)
                 .ToListAsync();
         }
 
-        public async Task<Book> RetrieveByIdAsync(Guid id)
+        public async Task<Book> RetrieveBookByBookIdAsync(Guid id)
         {
-            return await _context.Books
+            return await _context.Book
+                .Include(book => book.Author)
                 .FirstOrDefaultAsync(book => book.Id == id);
+        }
+
+        public async Task<Author> RetrieveAuthorByAuthorIdAsync(Guid id)
+        {
+            return await _context.Author
+                .FirstOrDefaultAsync(author => author.Id == id);
         }
     }
 }

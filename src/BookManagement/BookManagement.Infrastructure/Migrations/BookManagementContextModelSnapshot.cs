@@ -72,7 +72,7 @@ namespace BookManagement.Infrastructure.Migrations
 
                     b.HasIndex("AuthorId");
 
-                    b.ToTable("Books");
+                    b.ToTable("Book");
                 });
 
             modelBuilder.Entity("BookManagement.Domain.BookAggregate.Book", b =>
