@@ -1,4 +1,5 @@
-﻿using GraphQL;
+﻿using BookManagement.Domain.BookAggregate;
+using GraphQL;
 using System;
 
 namespace BookManagement.Api.Schema

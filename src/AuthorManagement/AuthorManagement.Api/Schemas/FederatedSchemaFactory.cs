@@ -1,14 +1,12 @@
 ﻿using AuthorManagement.Api.Extensions;
-using AuthorManagement.Api.Schemas;
 using AuthorManagement.Domain.AuthorAggregate;
 using GraphQL.Types;
 using GraphQL.Utilities.Federation;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using System;
 using System.IO;
 
-namespace AuthorManagement.Api.Schema
+namespace AuthorManagement.Api.Schemas
 {
     public static class FederatedSchemaFactory
     {
@@ -22,9 +20,9 @@ namespace AuthorManagement.Api.Schema
             {
                 _.ServiceProvider = serviceProvider;
                 _.Types
-                    .Include<BookType>();
-                _.Types
                     .Include<AuthorType>();
+                _.Types
+                    .Include<BookType>();
                 _.Types
                     .Include<AuthorInput>();
                 _.Types

@@ -20,7 +20,7 @@ namespace AuthorManagement.Api.Schemas
         }
 
         [GraphQLMetadata("createAuthor")]
-        public async Task<AuthorType> AddAuthorAsync(AuthorInput authorInput)
+        public async Task<AuthorType> CreateAuthorAsync(AuthorInput authorInput)
         {
             using var scope = _serviceProvider.CreateScope();
             var logger = scope.ServiceProvider.GetRequiredService<ILogger<AuthorMutation>>();

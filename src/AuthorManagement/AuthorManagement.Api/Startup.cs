@@ -1,5 +1,4 @@
 using AuthorManagement.Api.Application.Behaviors;
-using AuthorManagement.Api.Schema;
 using AuthorManagement.Api.Schemas;
 using AuthorManagement.Domain.AuthorAggregate;
 using AuthorManagement.Infrastructure;
@@ -30,7 +29,6 @@ namespace AuthorManagement.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             services
                 .AddControllerServices()
                 .AddDbServices(Configuration)
@@ -103,8 +101,10 @@ namespace AuthorManagement.Api
             services
                 .AddSingleton<AnyScalarGraphType>()
                 .AddSingleton<ServiceGraphType>()
-                .AddSingleton<AuthorQuery>()
+                .AddSingleton<AuthorType>()
+                .AddSingleton<BookType>()
                 .AddSingleton<AuthorInput>()
+                .AddSingleton<AuthorQuery>()
                 .AddSingleton<AuthorMutation>()
                 .AddSingleton(s => FederatedSchemaFactory.BuildFederatedSchema(s))
                 .AddGraphQL()

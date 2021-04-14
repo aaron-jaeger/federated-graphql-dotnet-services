@@ -31,7 +31,7 @@ namespace BookManagement.Api.Schema
                 _.Types
                     .Include<BookMutation>();
                 _.Types
-                    .For(nameof(Book))
+                    .For("Book")
                     .ResolveReferenceAsync(async context =>
                     {
                         using var scope = serviceProvider.CreateScope();

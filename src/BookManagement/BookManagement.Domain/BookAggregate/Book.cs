@@ -25,6 +25,10 @@ namespace BookManagement.Domain.BookAggregate
 
         private int _pages;
         public int Pages => _pages;
+        
+        public Book()
+        {
+        }
 
         public Book(string title, string overview, long isbn, string publisher, DateTime publicationDate,
             int pages)
