@@ -11,6 +11,7 @@ type Book @key(fields: "id") {
 
 extend type Author @key(fields: "id") {
     id: ID! @external
+    hasBooks: Boolean
 }
 
 input BookInput {

@@ -19,7 +19,7 @@ namespace AuthorManagement.Api.Schemas
         }
 
         [GraphQLMetadata("authors")]
-        public async Task<IEnumerable<AuthorType>> GetAuthorsAsync()
+        public async Task<IEnumerable<Author>> GetAuthorsAsync()
         {
             using var scope = _serviceProvider.CreateScope();
             var authorRepository = scope.ServiceProvider.GetRequiredService<IAuthorRepository>();
@@ -32,7 +32,7 @@ namespace AuthorManagement.Api.Schemas
         }
 
         [GraphQLMetadata("author")]
-        public async Task<AuthorType> GetAuthorByIdAsync(Guid id)
+        public async Task<Author> GetAuthorByIdAsync(Guid id)
         {
             using var scope = _serviceProvider.CreateScope();
             var authorRepository = scope.ServiceProvider.GetRequiredService<IAuthorRepository>();

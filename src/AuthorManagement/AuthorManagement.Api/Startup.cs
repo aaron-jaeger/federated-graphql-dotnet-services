@@ -101,7 +101,7 @@ namespace AuthorManagement.Api
             services
                 .AddSingleton<AnyScalarGraphType>()
                 .AddSingleton<ServiceGraphType>()
-                .AddSingleton<AuthorType>()
+                .AddSingleton<Schemas.Author>()
                 .AddSingleton<BookType>()
                 .AddSingleton<AuthorInput>()
                 .AddSingleton<AuthorQuery>()

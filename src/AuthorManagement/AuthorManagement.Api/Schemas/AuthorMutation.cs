@@ -20,7 +20,7 @@ namespace AuthorManagement.Api.Schemas
         }
 
         [GraphQLMetadata("createAuthor")]
-        public async Task<AuthorType> CreateAuthorAsync(AuthorInput authorInput)
+        public async Task<Author> CreateAuthorAsync(AuthorInput authorInput)
         {
             using var scope = _serviceProvider.CreateScope();
             var logger = scope.ServiceProvider.GetRequiredService<ILogger<AuthorMutation>>();
@@ -34,7 +34,7 @@ namespace AuthorManagement.Api.Schemas
             logger.LogDebug("Sending command {CommandName} ({@Command})", nameof(CreateAuthorCommand), createAuthorCommand);
             var author = await mediator.Send(createAuthorCommand);
 
-            logger.LogDebug("Converting entity ({@AggregateRoot}) to response type {ResponseType}.", author, nameof(AuthorType));
+            logger.LogDebug("Converting entity ({@AggregateRoot}) to response type {ResponseType}.", author, nameof(Author));
             var result = author.AsAuthorType();
 
             logger.LogDebug("Returning mutation result ({@Result})", result);

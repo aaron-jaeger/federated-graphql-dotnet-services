@@ -20,7 +20,7 @@ namespace BookManagement.Api.Schema
         }
 
         [GraphQLMetadata("createBook")]
-        public async Task<BookType> CreateBookAsync(BookInput bookInput)
+        public async Task<Book> CreateBookAsync(BookInput bookInput)
         {
             using var scope = _serviceProvider.CreateScope();
             var logger = scope.ServiceProvider.GetRequiredService<ILogger<BookMutation>>();
@@ -34,7 +34,7 @@ namespace BookManagement.Api.Schema
             logger.LogDebug("Sending command {CommandName} ({@Command})", nameof(CreateBookCommand), createBookCommand);
             var book = await mediator.Send(createBookCommand);
 
-            logger.LogDebug("Converting entity ({@AggregateRoot}) to response type {ResponseType}.", book, nameof(BookType));
+            logger.LogDebug("Converting entity ({@AggregateRoot}) to response type {ResponseType}.", book, nameof(Book));
             var result = book.AsBookType();
 
             logger.LogDebug("Returning mutation result ({@Result})", result);

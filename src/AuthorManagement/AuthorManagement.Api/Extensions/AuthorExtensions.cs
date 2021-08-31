@@ -6,9 +6,9 @@ namespace AuthorManagement.Api.Extensions
 {
     public static class AuthorExtensions
     {
-        public static AuthorType AsAuthorType(this Author input)
+        public static Schemas.Author AsAuthorType(this Domain.AuthorAggregate.Author input)
         {
-            var authorType = new AuthorType
+            var authorType = new Schemas.Author
             {
                 Id = input.Id,
                 FirstName = input.FirstName,

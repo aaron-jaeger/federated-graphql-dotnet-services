@@ -17,12 +17,15 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace BookManagement.Api
 {
     public class Startup
     {
+        private const string _schemaPath = "./schema.graphql";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -39,54 +42,22 @@ namespace BookManagement.Api
                 .AddMediatRServices()
                 .AddSingleton<AnyScalarGraphType>()
                 .AddSingleton<ServiceGraphType>()
-                .AddSingleton<BookType>()
-                .AddSingleton<AuthorType>()
+                .AddSingleton<Schema.Book>()
+                .AddSingleton<Schema.Author>()
                 .AddSingleton<BookInput>()
                 .AddSingleton<BookQuery>()
                 .AddSingleton<BookMutation>()
-                .AddSingleton<ISchema>(s =>
+                .AddSingleton<ISchema>(s => 
                 {
-                    return FederatedSchema.For(@"
-                        type Book @key(fields: ""id"") {
-                            id: ID!
-                            title: String
-                            overview: String
-                            author: Author
-                            isbn: Long
-                            publisher: String
-                            publicationDate: Date
-                            pages: Int
-                        }
+                    var schema = File.ReadAllText(_schemaPath);
 
-                        extend type Author @key(fields: ""id"") {
-                            id: ID! @external
-                        }
-
-                        input BookInput {
-                            title: String!
-                            overview: String!
-                            authorId: String!
-                            isbn: Long!
-                            publisher: String!
-                            publicationDate: Date!
-                            pages: Int!
-                        }
-
-                        extend type Query {
-                            books:[Book!]
-                            book(id: ID!): Book
-                        }
-
-                        extend type Mutation {
-                            createBook(bookInput: BookInput): Book
-                        }
-                    ", _ =>
+                    return FederatedSchema.For(schema, _ =>
                     {
                         _.ServiceProvider = s;
                         _.Types
-                            .Include<BookType>();
+                            .Include<Schema.Book>();
                         _.Types
-                            .Include<AuthorType>();
+                            .Include<Schema.Author>();
                         _.Types
                             .Include<BookInput>();
                         _.Types
@@ -106,16 +77,15 @@ namespace BookManagement.Api
 
                                     var id = Guid.Parse((string)context.Arguments["id"]);
 
-                                    logger.LogDebug("Resolving reference for {AggregateRootName} by id {Id}", nameof(Book), id);
-                                    //var newGuid = Guid.NewGuid();
+                                    logger.LogDebug("Resolving reference for {AggregateRootName} by id {Id}", nameof(Domain.BookAggregate.Book), id);
                                     var book = await bookRepository.RetrieveBookByBookIdAsync(id);
 
                                     logger.LogDebug("({@AggregateRoot})", book);
                                     logger.LogDebug("Book: Id {Id}, Title {Title}, Overview {Overview}, AuthorId {AuthorId}, Isbn {ISBN}, Publiser {Publisher}, PublicationDate {PublicationDate}, Pages {Pages}", book.Id, book.Title, book.Overview, book.Author.Id, book.Isbn, book.Publisher, book.PublicationDate, book.Pages);
-                                    //logger.LogDebug("Extending {AggregateRoot} as {GraphType}", nameof(Book), nameof(BookType));
-                                    //var result = book.AsBookType();
+                                    logger.LogDebug("Extending {AggregateRoot} as {GraphType}", nameof(Domain.BookAggregate.Book), nameof(Domain.BookAggregate.Book));
+                                    var result = book.AsBookType();
 
-                                    //logger.LogDebug("BookType: Id {Id}, Title {Title}, Overview {Overview}, AuthorId {AuthorId}, Isbn {ISBN}, Publiser {Publisher}, PublicationDate {PublicationDate}, Pages {Pages}", result.Id, result.Title, result.Overview, result.Author.Id, result.Isbn, result.Publisher, result.PublicationDate, result.Pages);
+                                    logger.LogDebug("BookType: Id {Id}, Title {Title}, Overview {Overview}, AuthorId {AuthorId}, Isbn {ISBN}, Publiser {Publisher}, PublicationDate {PublicationDate}, Pages {Pages}", result.Id, result.Title, result.Overview, result.Author.Id, result.Isbn, result.Publisher, result.PublicationDate, result.Pages);
 
                                     logger.LogDebug("Returning result ({@Result})", book);
                                     //var taskResult = Task.FromResult(result);
@@ -202,8 +172,8 @@ namespace BookManagement.Api
             services
                 .AddSingleton<AnyScalarGraphType>()
                 .AddSingleton<ServiceGraphType>()
-                .AddSingleton<BookType>()
-                .AddSingleton<AuthorType>()
+                .AddSingleton<Schema.Book>()
+                .AddSingleton<Schema.Author>()
                 .AddSingleton<BookInput>()
                 .AddSingleton<BookQuery>()
                 .AddSingleton<BookMutation>()
@@ -249,9 +219,9 @@ namespace BookManagement.Api
                     {
                         _.ServiceProvider = s;
                         _.Types
-                            .Include<BookType>();
+                            .Include<Schema.Book>();
                         _.Types
-                            .Include<AuthorType>();
+                            .Include<Schema.Author>();
                         _.Types
                             .Include<BookInput>();
                         _.Types
@@ -270,7 +240,7 @@ namespace BookManagement.Api
 
                                 var id = Guid.Parse((string)context.Arguments["id"]);
 
-                                logger.LogDebug("Resolving reference for {AggregateRootName} by id {Id}", nameof(Book), id);
+                                logger.LogDebug("Resolving reference for {AggregateRootName} by id {Id}", nameof(Domain.BookAggregate.Book), id);
                                 var book = await bookRepository.RetrieveBookByBookIdAsync(id);
 
                                 var result = book.AsBookType();

@@ -20,7 +20,7 @@ namespace BookManagement.Api.Schema
         }
 
         [GraphQLMetadata("books")]
-        public async Task<IEnumerable<BookType>> GetBooksAsync()
+        public async Task<IEnumerable<Book>> GetBooksAsync()
         {
             using var scope = _serviceProvider.CreateScope();
             var bookRepository = scope.ServiceProvider.GetRequiredService<IBookRepository>();
@@ -33,7 +33,7 @@ namespace BookManagement.Api.Schema
         }
 
         [GraphQLMetadata("book")]
-        public async Task<BookType> GetBookByIdAsync(Guid id)
+        public async Task<Book> GetBookByIdAsync(Guid id)
         {
             using var scope = _serviceProvider.CreateScope();
             var bookRepository = scope.ServiceProvider.GetRequiredService<IBookRepository>();

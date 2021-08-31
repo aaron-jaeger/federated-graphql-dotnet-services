@@ -5,9 +5,9 @@ namespace BookManagement.Api.Extensions
 {
     public static class BookExtensions
     {
-        public static BookType AsBookType(this Book input)
+        public static Schema.Book AsBookType(this Domain.BookAggregate.Book input)
         {
-            var bookType = new BookType
+            var bookType = new Schema.Book
             {
                 Id = input.Id,
                 Title = input.Title,
@@ -22,9 +22,9 @@ namespace BookManagement.Api.Extensions
             return bookType;
         }
 
-        public static AuthorType AsAuthorType(this Author input)
+        public static Schema.Author AsAuthorType(this Domain.BookAggregate.Author input)
         {
-            var authorType = new AuthorType
+            var authorType = new Schema.Author
             {
                 Id = input.Id
             };

@@ -20,7 +20,7 @@ namespace AuthorManagement.Api.Schemas
             {
                 _.ServiceProvider = serviceProvider;
                 _.Types
-                    .Include<AuthorType>();
+                    .Include<Author>();
                 _.Types
                     .Include<BookType>();
                 _.Types
