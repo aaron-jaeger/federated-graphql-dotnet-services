@@ -1,6 +1,7 @@
-﻿using AuthorManagement.Api.Models;
-using AuthorManagement.Api.Services;
+﻿using AuthorManagement.Api.Extensions;
+using AuthorManagement.Domain.AuthorAggregate;
 using GraphQL;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,22 +12,36 @@ namespace AuthorManagement.Api.Schemas
     [GraphQLMetadata("Query")]
     public class AuthorQuery
     {
-        private readonly IAuthorService _authors;
-        public AuthorQuery(IAuthorService authors)
+        private readonly IServiceProvider _serviceProvider;
+        public AuthorQuery(IServiceProvider serviceProvider)
         {
-            _authors = authors;
+            _serviceProvider = serviceProvider;
         }
 
         [GraphQLMetadata("authors")]
         public async Task<IEnumerable<Author>> GetAuthorsAsync()
         {
-            return await _authors.GetAuthorsAsync();
+            using var scope = _serviceProvider.CreateScope();
+            var authorRepository = scope.ServiceProvider.GetRequiredService<IAuthorRepository>();
+
+            var authors = await authorRepository.RetrieveAllAuthorsAsync();
+
+            var result = authors.Select(author => author.AsAuthorType());
+
+            return result;
         }
 
         [GraphQLMetadata("author")]
         public async Task<Author> GetAuthorByIdAsync(Guid id)
         {
-            return await _authors.GetAuthorByIdAsync(id);
+            using var scope = _serviceProvider.CreateScope();
+            var authorRepository = scope.ServiceProvider.GetRequiredService<IAuthorRepository>();
+
+            var author = await authorRepository.RetrieveAuthorByAuthorIdAsync(id);
+
+            var result = author.AsAuthorType();
+
+            return result;
         }
     }
 }

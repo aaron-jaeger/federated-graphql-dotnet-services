@@ -1,0 +1,34 @@
+type Book @key(fields: "id") {
+    id: ID!
+    title: String
+    overview: String
+    author: Author
+    isbn: Long
+    publisher: String
+    publicationDate: Date
+    pages: Int
+}
+
+extend type Author @key(fields: "id") {
+    id: ID! @external
+    hasBooks: Boolean
+}
+
+input BookInput {
+    title: String!
+    overview: String!
+    authorId: String!
+    isbn: Long!
+    publisher: String!
+    publicationDate: Date!
+    pages: Int!
+}
+
+extend type Query {
+    books: [Book!]
+    book(id: ID!): Book
+}
+
+extend type Mutation {
+    createBook(bookInput: BookInput): Book
+}

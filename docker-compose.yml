@@ -8,11 +8,15 @@ services:
             - author-management-api
         ports:
             - 40000:80
+        restart: always
         environment:
             - GRAPHQL_URL_0=http://book-management-api/graphql
             - GRAPHQL_URL_1=http://author-management-api/graphql
             - GRAPHQL_UPDATE_GATEWAY=true
             - GRAPHQL_UPDATE_GATEWAY_INTERVAL_MS=60000
+        depends_on:
+            - book-management-api
+            - author-management-api
     book-management-api:
         image: bookmanagement.api
         build:
@@ -21,6 +25,18 @@ services:
         ports:
             - 41000:80
             - 41001:443
+        restart: always
+        depends_on:
+            - book-management-db
+        links:
+            - book-management-db
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Demo
+    book-management-db:
+        image: "mcr.microsoft.com/mssql/server"
+        environment:
+            SA_PASSWORD: "Book-Management1!"
+            ACCEPT_EULA: "Y"
     author-management-api:
         image: authormanagement.api
         build:
@@ -29,3 +45,15 @@ services:
         ports:
             - 42000:80
             - 42001:443
+        restart: always
+        depends_on:
+            - author-management-db
+        links:
+            - author-management-db
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Demo
+    author-management-db:
+        image: "mcr.microsoft.com/mssql/server"
+        environment:
+            SA_PASSWORD: "Author-Management1!"
+            ACCEPT_EULA: "Y"
