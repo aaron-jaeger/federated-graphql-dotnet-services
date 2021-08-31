@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 
 namespace BookManagement.Api.Schema
 {
@@ -19,7 +20,7 @@ namespace BookManagement.Api.Schema
         }
 
         public Guid Id { get; set; }
-        public bool HasBooks(IResolveFieldContext context, Author source)
+        public bool HasBooks(IResolveFieldContext context, Author author)
         {
 
             using var scope = _serviceProvider.CreateScope();
@@ -27,19 +28,16 @@ namespace BookManagement.Api.Schema
 
             logger.LogInformation("doing author things");
 
-            //foreach(var argument in context.Arguments)
-            //{
-            //    logger.LogInformation(argument.Key);
-            //}
+            string id = (context.Source as Dictionary<string, object>)?["id"]?.ToString();
 
-            //var test = context.HasArgument("id");
+            logger.LogInformation($"The stupid id is {id}");
 
-            logger.LogInformation($"The id of the author is {source.Id}");
-            
-            //var fuckYouId = Guid.Parse((string)context.Arguments["id"].Value);
-            //Console.WriteLine(fuckYouId);
-            //return fuckYouId == Guid.Empty;
-            return source.Id != Guid.Empty;
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }
