@@ -26,11 +26,11 @@ namespace BookManagement.Api.Schema
             using var scope = _serviceProvider.CreateScope();
             var logger = scope.ServiceProvider.GetRequiredService<ILogger<Author>>();
 
-            logger.LogInformation("doing author things");
+            logger.LogInformation("Getting the ID of the Author.");
 
             string id = (context.Source as Dictionary<string, object>)?["id"]?.ToString();
 
-            logger.LogInformation($"The stupid id is {id}");
+            logger.LogInformation($"The Id of the Author is {id}");
 
             if (string.IsNullOrWhiteSpace(id))
             {
